@@ -1,8 +1,8 @@
 version: "4"
 services:
-  kafka:
+  kafka-sasl-oqs:
     image: 'bitnami/kafka:3.9.0'
-    container_name: kafka-sasl
+    container_name: kafka-sasl-oqs
     ports:
       - '6092:6092'
       - '6093:6093'

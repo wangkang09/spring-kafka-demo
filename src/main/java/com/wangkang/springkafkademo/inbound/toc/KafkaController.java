@@ -1,4 +1,4 @@
-package com.wangkang.springkafkademo.controller;
+package com.wangkang.springkafkademo.inbound.toc;
 
 import com.wangkang.springkafkademo.kafkasender.KafkaSender;
 import org.springframework.beans.factory.annotation.Autowired;

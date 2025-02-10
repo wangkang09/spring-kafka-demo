@@ -12,11 +12,13 @@ spring:
       acks: all #all：broker需要将消息同步到所有副本之后才返回（可靠性最高，性能最低）。1：消息写入leader本地日志后就返回（leader记录后宕机会存在消息丢失）。0：生产者发生到套接字后即视为成功（retry参数不生效，性能最高）
       bootstrap-servers: 127.0.0.1:6092
     consumer:
-      bootstrap-servers: 127.0.0.1:6092
       oqs:
         bootstrap-servers: 127.0.0.1:6092
+        jaas: 'org.apache.kafka.common.security.plain.PlainLoginModule required username="root" password="root";'
       ots:
-        bootstrap-servers: 127.0.0.1:6092
+        bootstrap-servers: 127.0.0.1:7092
+        jaas: 'org.apache.kafka.common.security.plain.PlainLoginModule required username="root1" password="root1";'
+        value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer #消费消息之前反序列化，和生产者序列化要一致
       group-id: common-group
       max-poll-records: 10 #一次从kafka中poll出来的数据条数,max.poll.records条数据需要在在max.poll.interval.ms这个时间内处理完
@@ -30,7 +32,6 @@ spring:
         max.poll.interval.ms: 600000 #最大的 poll 间隔，如果超过此间隔消费者还没有调用 poll ，则会将此消费者剔除
         security.protocol: SASL_PLAINTEXT
         sasl.mechanism: PLAIN
-        sasl.jaas.config: 'org.apache.kafka.common.security.plain.PlainLoginModule required username="root" password="root";'
 
     listener:
       ack-mode: manual_immediate #每次处理完一批消息立即ack
