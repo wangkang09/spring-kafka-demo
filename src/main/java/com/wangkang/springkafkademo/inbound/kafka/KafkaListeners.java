@@ -19,7 +19,7 @@ public class KafkaListeners {
      * @param message
      * @param acknowledgment 只有在设置为手动提交时才能声明，不然会报错
      */
-    @KafkaListener(groupId = "ots1", topics = "topic1", properties = "bootstrap.servers=${spring.kafka.consumer.ots.bootstrap-servers}")
+    @KafkaListener(groupId = "ots1", topics = "my-secure-topic")
     public void listenOts(ConsumerRecord<String, Foo> message, Acknowledgment acknowledgment) {
         log.info("Received. topic:{},value:{},offset:{}", message.topic(), message.value(), message.offset());
         if (message.value().getFoo().startsWith("fail")) {
@@ -28,16 +28,16 @@ public class KafkaListeners {
         acknowledgment.acknowledge();
     }
 
-    /**
-     * @param message
-     * @param acknowledgment 只有在设置为手动提交时才能声明，不然会报错
-     */
-    @KafkaListener(groupId = "oqs1", topics = "topic2", properties = "bootstrap.servers=${spring.kafka.consumer.oqs.bootstrap-servers}")
-    public void listenOqs(ConsumerRecord<String, Foo> message, Acknowledgment acknowledgment) {
-        log.info("Received. topic:{},value:{},offset:{}", message.topic(), message.value(), message.offset());
-        if (message.value().getFoo().startsWith("fail")) {
-            throw new RuntimeException("failed");
-        }
-        acknowledgment.acknowledge();
-    }
+//    /**
+//     * @param message
+//     * @param acknowledgment 只有在设置为手动提交时才能声明，不然会报错
+//     */
+//    @KafkaListener(groupId = "oqs1", topics = "topic2", properties = "bootstrap.servers=${spring.kafka.consumer.oqs.bootstrap-servers}")
+//    public void listenOqs(ConsumerRecord<String, Foo> message, Acknowledgment acknowledgment) {
+//        log.info("Received. topic:{},value:{},offset:{}", message.topic(), message.value(), message.offset());
+//        if (message.value().getFoo().startsWith("fail")) {
+//            throw new RuntimeException("failed");
+//        }
+//        acknowledgment.acknowledge();
+//    }
 }
