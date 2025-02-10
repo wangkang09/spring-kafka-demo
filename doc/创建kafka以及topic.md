@@ -19,13 +19,13 @@ kafka-topics.sh --create --topic my-ots-topic --bootstrap-server localhost:7092 
 kafka-console-producer.sh \
   --bootstrap-server localhost:7092 \
   --topic my-ots-topic \
-  --producer.config client-sasl.properties
+  --producer.config /opt/bitnami/kafka/config/client-sasl.properties
 # 消费topic
 kafka-console-consumer.sh \
   --bootstrap-server localhost:7092 \
   --topic your-topic \
   --from-beginning \
-  --consumer.config client-sasl.properties
+  --consumer.config /opt/bitnami/kafka/config/client-sasl.properties
 # 创建 client-sasl.properties
 cd /opt/bitnami/kafka/config
 touch client-sasl.properties
