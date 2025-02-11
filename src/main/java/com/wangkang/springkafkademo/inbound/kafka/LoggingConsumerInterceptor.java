@@ -17,19 +17,19 @@ public class LoggingConsumerInterceptor implements ConsumerInterceptor<String, F
     @Override
     public ConsumerRecords<String, Foo> onConsume(ConsumerRecords<String, Foo> records) {
         records.forEach(record -> {
-            log.info("onConsume.topic:{},value:{},offset:{},servers:{}", record.topic(), record.value(), record.offset(),servers);
+            log.info("监听到消费ConsumerInterceptor.topic:{},value:{},offset:{},servers:{}", record.topic(), record.value(), record.offset(),servers);
         });
         return records;
     }
 
     @Override
     public void close() {
-        log.info("LoggingConsumerInterceptor close");
+        log.info("关闭：LoggingConsumerInterceptor");
     }
 
     @Override
     public void onCommit(Map offsets) {
-        log.info("onCommit:{}", offsets);
+        log.info("开始提交:{}", offsets);
     }
 
     @Override

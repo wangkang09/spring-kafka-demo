@@ -11,6 +11,6 @@ public class ConsumerStoppedListener {
 
     @EventListener
     public void handle(ConsumerStoppedEvent cse) {
-        log.info("ConsumerStoppedEvent:{}", cse);
+        log.warn("消费者停止消费事件:{}", cse);
     }
 }

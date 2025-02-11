@@ -6,21 +6,24 @@ import org.springframework.kafka.listener.ConsumerAwareRebalanceListener;
 
 import java.util.Collection;
 
+/**
+ * rebalance 监听
+ */
 @Slf4j
 public class LoggingConsumerAwareRebalanceListener implements ConsumerAwareRebalanceListener {
 
     @Override
     public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
-        log.info("onPartitionsRevoked:{}", partitions);
+//        log.info("onPartitionsRevoked:{}", partitions);
     }
 
     @Override
     public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
-        log.info("onPartitionsAssigned:{}", partitions);
+//        log.info("onPartitionsAssigned:{}", partitions);
     }
 
     @Override
     public void onPartitionsLost(Collection<TopicPartition> partitions) {
-        log.info("onPartitionsLost:{}", partitions);
+//        log.info("onPartitionsLost:{}", partitions);
     }
 }

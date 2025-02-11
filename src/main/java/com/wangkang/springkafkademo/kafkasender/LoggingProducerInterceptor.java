@@ -18,18 +18,18 @@ public class LoggingProducerInterceptor implements ProducerInterceptor<String, F
     @Override
     public ProducerRecord<String, Foo> onSend(ProducerRecord<String, Foo> record) {
 //        log.info("onSend:{},server:{},configs:{}", record, servers, configs);
-        log.info("onSend.topic:{},value:{}", record.topic(), record.value());
+        log.info("监听到发送消息.topic:{},value:{}", record.topic(), record.value());
         return record;
     }
 
     @Override
     public void onAcknowledgement(RecordMetadata metadata, Exception exception) {
-        log.info("onAcknowledgement:{}", metadata, exception);
+        log.info("监听到提交:{}", metadata, exception);
     }
 
     @Override
     public void close() {
-        log.info("LoggingProducerInterceptor close");
+        log.info("关闭：LoggingProducerInterceptor");
     }
 
     @Override

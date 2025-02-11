@@ -11,6 +11,6 @@ public class ConsumerStartedListener {
 
     @EventListener
     public void handle(ConsumerStartedEvent cse) {
-        log.info("ConsumerStartedEvent:{}", cse);
+        log.warn("消费者成功启动事件:{}", cse);
     }
 }

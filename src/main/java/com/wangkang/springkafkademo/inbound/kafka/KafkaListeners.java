@@ -21,7 +21,7 @@ public class KafkaListeners {
      */
     @KafkaListener(groupId = "oqs", topics = "my-oqs-topic", properties = {"bootstrap.servers=${spring.kafka.consumer.oqs.bootstrap-servers}","sasl.jaas.config=${spring.kafka.consumer.oqs.jaas}"})
     public void listenOqs(ConsumerRecord<String, Foo> message, Acknowledgment acknowledgment) {
-        log.info("ReceivedOqs. topic:{},value:{},offset:{}", message.topic(), message.value(), message.offset());
+        log.info("接收到消息，Oqs. topic:{},value:{},offset:{}", message.topic(), message.value(), message.offset());
         if (message.value().getFoo().startsWith("fail")) {
             throw new RuntimeException("failed");
         }
@@ -30,7 +30,7 @@ public class KafkaListeners {
 
     @KafkaListener(groupId = "ots", topics = "my-ots-topic", properties = {"bootstrap.servers=${spring.kafka.consumer.ots.bootstrap-servers}","sasl.jaas.config=${spring.kafka.consumer.ots.jaas}","value.deserializer=${spring.kafka.consumer.ots.value-deserializer}"})
     public void listenOts(ConsumerRecord<String, String> message, Acknowledgment acknowledgment) {
-        log.info("ReceivedOts. topic:{},value:{},offset:{}", message.topic(), message.value(), message.offset());
+        log.info("接收到消息，Ots. topic:{},value:{},offset:{}", message.topic(), message.value(), message.offset());
         if (message.value().startsWith("fail")) {
             throw new RuntimeException("failed");
         }

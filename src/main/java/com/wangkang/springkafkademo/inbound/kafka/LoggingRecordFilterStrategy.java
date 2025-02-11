@@ -13,7 +13,8 @@ public class LoggingRecordFilterStrategy<K, V> implements RecordFilterStrategy<K
 
     @Override
     public boolean filter(ConsumerRecord<K, V> consumerRecord) {
-        log.info("LoggingRecordFilterStrategy.topic:{},value:{},offset:{}", consumerRecord.topic(), consumerRecord.value(), consumerRecord.offset());
+
+        log.info("进入过滤器.topic:{},value:{},offset:{}", consumerRecord.topic(), consumerRecord.value(), consumerRecord.offset());
         return false;
     }
 }

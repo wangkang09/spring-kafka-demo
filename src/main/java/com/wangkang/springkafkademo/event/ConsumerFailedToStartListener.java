@@ -11,6 +11,6 @@ public class ConsumerFailedToStartListener {
 
     @EventListener
     public void handle(ConsumerFailedToStartEvent cse) {
-        log.info("ConsumerFailedToStartEvent:{}", cse);
+        log.error("消费者启动失败事件:{}", cse);
     }
 }

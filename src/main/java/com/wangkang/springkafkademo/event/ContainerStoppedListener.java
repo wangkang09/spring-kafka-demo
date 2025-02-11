@@ -11,6 +11,6 @@ public class ContainerStoppedListener {
 
     @EventListener
     public void handle(ContainerStoppedEvent cse) {
-        log.info("ContainerStoppedEvent:{}", cse);
+        log.info("容器停止事件:{}", cse);
     }
 }

@@ -45,7 +45,7 @@ public class KafkaConsumerConfig {
     @Bean
     public DefaultErrorHandler errorHandler(KafkaTemplate template) {
 //简单记日志
-        return new DefaultErrorHandler((record, exception) -> log.info("SimpleLogConsumerRecoverer.topic:{},value:{},offset:{}", record.topic(), record.value(), record.offset(), exception),
+        return new DefaultErrorHandler((record, exception) -> log.info("失败后兜底.topic:{},value:{},offset:{}", record.topic(), record.value(), record.offset(), exception),
                 new FixedBackOff(1000L, 1));
 //        return new DefaultErrorHandler(new DeadLetterPublishingRecoverer(template), new FixedBackOff(1000L, 1));
     }

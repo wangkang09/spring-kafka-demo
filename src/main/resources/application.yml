@@ -8,7 +8,7 @@ spring:
         sasl.jaas.config: 'org.apache.kafka.common.security.plain.PlainLoginModule required username="root" password="root";'
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer #发送消息之前序列化，和消费者反序列化要一致
       retries: 3
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer #消息 key 的序列化。一般默认为StringSerializer，消息的key的作用在于分区路由，最好指定
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer #消息 key 的序列化。一般默认为StringSerializer，消息的key的作用在于分区路由
       acks: all #all：broker需要将消息同步到所有副本之后才返回（可靠性最高，性能最低）。1：消息写入leader本地日志后就返回（leader记录后宕机会存在消息丢失）。0：生产者发生到套接字后即视为成功（retry参数不生效，性能最高）
       bootstrap-servers: 127.0.0.1:6092
     consumer:
@@ -21,9 +21,9 @@ spring:
         value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer #消费消息之前反序列化，和生产者序列化要一致
       group-id: common-group
-      max-poll-records: 10 #一次从kafka中poll出来的数据条数,max.poll.records条数据需要在在max.poll.interval.ms这个时间内处理完
+      max-poll-records: 10 #一次从kafka中poll出来的数据条数,max.poll.records条数据需要在在max.poll.interval.ms这个时间内处理完，所以最好不要太多
       auto-offset-reset: earliest #earliest：partition没有group对应的offset时，从最早的offset开始消费。latest：xxx，从最近的offset开始消费（扩容时可能丢失消息）
-      heartbeat-interval: 10s #heartbeat 间隔，此值必须小于 session.timeout.ms，但是最好小于 sesstion.timeout.ms 的 1/3
+      heartbeat-interval: 10s #heartbeat 间隔，此值必须小于 session.timeout.ms
       enable-auto-commit: false
       properties:
         interceptor.classes: com.wangkang.springkafkademo.inbound.kafka.LoggingConsumerInterceptor
@@ -32,18 +32,16 @@ spring:
         max.poll.interval.ms: 600000 #最大的 poll 间隔，如果超过此间隔消费者还没有调用 poll ，则会将此消费者剔除
         security.protocol: SASL_PLAINTEXT
         sasl.mechanism: PLAIN
-
     listener:
       ack-mode: manual_immediate #每次处理完一批消息立即ack
       type: SINGLE # 正常用 SINGLE 即可，BATCH 复杂些
     client-id: wk-test
-#      concurrency: 3 #开启多个消费者
+#      concurrency: 3 #开启多个消费者，如果分区多，但是实例少，可以开启多个消费者
 management:
   metrics:
     web:
       server:
         max-uri-tags: 1000
-
     distribution:
       percentiles:
         http.server.requests: 0.5,0.9,0.95,0.99 #这个配置表示，统计 http 请求响应时间 tp50，tp90，tp95，tp99。可以自定义tp值。其实 0.5 可以不统计，因为没啥意义
