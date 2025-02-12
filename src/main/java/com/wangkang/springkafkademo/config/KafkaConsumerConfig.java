@@ -14,7 +14,6 @@ import org.springframework.util.backoff.FixedBackOff;
 
 /**
  * 泛型必须是 Obj 不然不行，，
- *
  */
 @Configuration
 @Slf4j
@@ -44,9 +43,16 @@ public class KafkaConsumerConfig {
      */
     @Bean
     public DefaultErrorHandler errorHandler(KafkaTemplate template) {
-//简单记日志
-        return new DefaultErrorHandler((record, exception) -> log.info("失败后兜底.topic:{},value:{},offset:{}", record.topic(), record.value(), record.offset(), exception),
+
+        //简单记日志
+        DefaultErrorHandler errorHandler = new DefaultErrorHandler((record, exception) -> log.info("失败后兜底.topic:{},value:{},offset:{}", record.topic(), record.value(), record.offset(), exception),
                 new FixedBackOff(1000L, 1));
-//        return new DefaultErrorHandler(new DeadLetterPublishingRecoverer(template), new FixedBackOff(1000L, 1));
+        //则提供有序记录恢复的能力，确保成功处理的记录得到正确确认
+        errorHandler.setCommitRecovered(true);
+        //在处理完成后确认偏移量，确保记录不会被重复处理
+        errorHandler.setAckAfterHandle(true);
+        //用于处理错误后重新调整偏移量，以便消息能够被适当地重试
+        errorHandler.setSeekAfterError(true);
+        return errorHandler;
     }
 }
