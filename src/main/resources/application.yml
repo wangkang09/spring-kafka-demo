@@ -7,7 +7,7 @@ spring:
         sasl.mechanism: PLAIN
         sasl.jaas.config: 'org.apache.kafka.common.security.plain.PlainLoginModule required username="root" password="root";'
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer #发送消息之前序列化，和消费者反序列化要一致
-      retries: 3
+      retries: 2 # 透明重试，针对可恢复异常，如网络问题，broke 问题
       key-serializer: org.apache.kafka.common.serialization.StringSerializer #消息 key 的序列化。一般默认为StringSerializer，消息的key的作用在于分区路由
       acks: all #all：broker需要将消息同步到所有副本之后才返回（可靠性最高，性能最低）。1：消息写入leader本地日志后就返回（leader记录后宕机会存在消息丢失）。0：生产者发生到套接字后即视为成功（retry参数不生效，性能最高）
       bootstrap-servers: 127.0.0.1:6092

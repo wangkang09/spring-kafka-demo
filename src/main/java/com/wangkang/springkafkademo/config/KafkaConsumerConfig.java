@@ -43,10 +43,14 @@ public class KafkaConsumerConfig {
      */
     @Bean
     public DefaultErrorHandler errorHandler(KafkaTemplate template) {
-
-        //简单记日志
-        DefaultErrorHandler errorHandler = new DefaultErrorHandler((record, exception) -> log.info("失败后兜底.topic:{},value:{},offset:{}", record.topic(), record.value(), record.offset(), exception),
-                new FixedBackOff(1000L, 1));
+        DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(template);
+        //兜底失败也不报错
+        recoverer.setFailIfSendResultIsError(false);
+//        DefaultErrorHandler errorHandler = new DefaultErrorHandler(recoverer, new FixedBackOff(1000L, 1));
+        DefaultErrorHandler errorHandler = new DefaultErrorHandler((record, exception) -> {
+            log.info("失败后兜底.topic:{},value:{},offset:{}", record.topic(), record.value(), record.offset(), exception);
+            recoverer.accept(record, exception);
+        }, new FixedBackOff(1000L, 1));
         //则提供有序记录恢复的能力，确保成功处理的记录得到正确确认
         errorHandler.setCommitRecovered(true);
         //在处理完成后确认偏移量，确保记录不会被重复处理

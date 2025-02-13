@@ -1,5 +1,6 @@
 package com.wangkang.springkafkademo.inbound.kafka;
 
+import com.wangkang.springkafkademo.exception.BusinessException;
 import com.wangkang.springkafkademo.po.Foo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -34,6 +35,15 @@ public class KafkaListeners {
         if (message.value().startsWith("fail")) {
             throw new RuntimeException("failed");
         }
+        try {
+            doBusiness(message);
+        } catch (BusinessException e) {
+            //做一些异常逻辑，如果是非businessException走 errorHandler逻辑
+        }
         acknowledgment.acknowledge();
+    }
+
+    private void doBusiness(ConsumerRecord<String, String> message) {
+
     }
 }
