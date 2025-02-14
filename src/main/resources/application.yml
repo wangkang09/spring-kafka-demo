@@ -6,6 +6,8 @@ spring:
         security.protocol: SASL_PLAINTEXT
         sasl.mechanism: PLAIN
         sasl.jaas.config: 'org.apache.kafka.common.security.plain.PlainLoginModule required username="root" password="root";'
+        retry.backoff.ms: 100 #重试延时时间，默认为100
+        retry.backoff.max.ms: 1000 #延时最大时间，默认为1000。当 backoff.ms 大于 backoff.max.ms 时，延时时间为 backoff.max.ms
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer #发送消息之前序列化，和消费者反序列化要一致
       retries: 2 # 透明重试，针对可恢复异常，如网络问题，broke 问题
       key-serializer: org.apache.kafka.common.serialization.StringSerializer #消息 key 的序列化。一般默认为StringSerializer，消息的key的作用在于分区路由
